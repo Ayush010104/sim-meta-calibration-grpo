@@ -1,0 +1,9 @@
+physics check (diff): 6.27283450252425e-08
+system K=10 M=64 L=6 bits=384; channels 20; mean|H|=3.81e-05
+random 1-bit: 0.008
+relaxed gradient (exact model) N=50: 0.515
+relaxed gradient (exact model) N=200: 0.516
+relaxed multi-start best-of-8 (exact model): 0.625  (121% of S=1)
+relaxed S=1 + polish(20, black-box): 0.646
+mismatch sigma=0.3: nominal-model gradient 0.191 | +polish 0.480 | oracle-model gradient 0.538
+mismatch sigma=0.6: nominal-model gradient 0.025 | +polish 0.351 | oracle-model gradient 0.540

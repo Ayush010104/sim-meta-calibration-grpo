@@ -1,0 +1,17 @@
+held-out devices: dev-channel rate vs calibration updates (G=32 measurements x 6 channels per update)
+device arm          u=0    u=10   u=20   u=30   u=40   u=50   u=60   u=70   u=80   u=90   u=100 
+900 nominal-init   0.028  0.028  0.072  0.058  0.102  0.094  0.139  0.117  0.116  0.146  0.134 
+900 meta-init      0.101  0.129  0.173  0.169  0.210  0.180  0.185  0.186  0.179  0.190  0.196 
+901 nominal-init   0.062  0.049  0.050  0.074  0.112  0.092  0.142  0.121  0.124  0.123  0.170 
+901 meta-init      0.177  0.191  0.215  0.177  0.227  0.228  0.217  0.226  0.250  0.216  0.217 
+902 nominal-init   0.044  0.042  0.063  0.099  0.102  0.139  0.136  0.152  0.134  0.151  0.147 
+902 meta-init      0.106  0.147  0.183  0.179  0.220  0.246  0.249  0.232  0.234  0.228  0.231 
+
+TEST (40 channels, 200 steps):
+900 nominal-init   calibrated 0.134 | nominal 0.023 | oracle 0.331 | errs {'psi': 0.321, 'amp': 0.041, 'spacing': 0.03, 'offset': 0.025}
+900 meta-init      calibrated 0.199 | nominal 0.023 | oracle 0.331 | errs {'psi': 0.228, 'amp': 0.055, 'spacing': 0.023, 'offset': 0.02}
+901 nominal-init   calibrated 0.148 | nominal 0.033 | oracle 0.333 | errs {'psi': 0.323, 'amp': 0.048, 'spacing': 0.027, 'offset': 0.018}
+901 meta-init      calibrated 0.238 | nominal 0.033 | oracle 0.333 | errs {'psi': 0.22, 'amp': 0.06, 'spacing': 0.027, 'offset': 0.015}
+902 nominal-init   calibrated 0.178 | nominal 0.028 | oracle 0.372 | errs {'psi': 0.318, 'amp': 0.052, 'spacing': 0.034, 'offset': 0.025}
+902 meta-init      calibrated 0.278 | nominal 0.028 | oracle 0.372 | errs {'psi': 0.227, 'amp': 0.064, 'spacing': 0.017, 'offset': 0.024}
+DONE

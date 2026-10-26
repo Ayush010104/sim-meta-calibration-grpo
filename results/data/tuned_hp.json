@@ -1,0 +1,16 @@
+{
+ "reptile": {
+  "eta": 1.0
+ },
+ "periodic_ema": {
+  "eta": 0.5
+ },
+ "prox": {
+  "alpha_prox": 0.02,
+  "eta": 0.3
+ },
+ "fomaml": {
+  "beta": 0.003,
+  "m": 3
+ }
+}

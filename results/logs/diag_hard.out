@@ -1,0 +1,12 @@
+perfect information, S=1:                 1.266
+random 1-bit configuration:               0.054
+(a) CSI error std=0.1                     1.220  (96% of perfect)
+(a) CSI error std=0.3                     1.002  (79% of perfect)
+(a) CSI error std=0.6                     0.636  (50% of perfect)
+(a) CSI error std=1.0                     0.306  (24% of perfect)
+(b) fixed Ws phase mismatch sigma=0.1  rad  1.154  (91% of perfect)
+(b) fixed Ws phase mismatch sigma=0.3  rad  0.628  (50% of perfect)
+(b) fixed Ws phase mismatch sigma=0.6  rad  0.140  (11% of perfect)
+(b) fixed Ws phase mismatch sigma=1.0  rad  0.072  (6% of perfect)
+(c) multi-start S=4  (perfect info, best of S)  1.462  (115% of S=1)
+(c) multi-start S=16 (perfect info, best of S)  1.569  (124% of S=1)

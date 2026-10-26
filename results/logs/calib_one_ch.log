@@ -1,0 +1,36 @@
+scenario amp: a0=1.000 api=0.697 delta=0.0 psi_std=0.316
+calibration mode: one
+  dev reference nominal          0.096
+  dev reference amplitude-aware  0.141
+  dev reference oracle           0.367
+u=   0 dev deploy 0.096 | a0_hat 1.00 api_hat 1.00 delta_hat +0.000 (0s)
+u=  25 dev deploy 0.150 | a0_hat 1.01 api_hat 0.82 delta_hat +0.005 (72s)
+u=  50 dev deploy 0.174 | a0_hat 1.03 api_hat 0.68 delta_hat -0.002 (158s)
+u=  75 dev deploy 0.178 | a0_hat 1.04 api_hat 0.68 delta_hat -0.003 (240s)
+u= 100 dev deploy 0.172 | a0_hat 1.03 api_hat 0.70 delta_hat +0.004 (319s)
+u= 125 dev deploy 0.186 | a0_hat 1.04 api_hat 0.70 delta_hat +0.004 (397s)
+u= 150 dev deploy 0.212 | a0_hat 1.05 api_hat 0.71 delta_hat +0.009 (488s)
+u= 175 dev deploy 0.231 | a0_hat 1.05 api_hat 0.71 delta_hat +0.001 (573s)
+u= 200 dev deploy 0.242 | a0_hat 1.05 api_hat 0.70 delta_hat -0.013 (665s)
+u= 225 dev deploy 0.243 | a0_hat 1.06 api_hat 0.71 delta_hat -0.008 (769s)
+u= 250 dev deploy 0.258 | a0_hat 1.05 api_hat 0.72 delta_hat -0.003 (892s)
+u= 275 dev deploy 0.278 | a0_hat 1.06 api_hat 0.70 delta_hat +0.002 (1008s)
+u= 300 dev deploy 0.250 | a0_hat 1.06 api_hat 0.71 delta_hat +0.022 (1117s)
+u= 325 dev deploy 0.282 | a0_hat 1.06 api_hat 0.72 delta_hat +0.005 (1230s)
+u= 350 dev deploy 0.248 | a0_hat 1.08 api_hat 0.72 delta_hat -0.006 (1342s)
+u= 375 dev deploy 0.263 | a0_hat 1.06 api_hat 0.70 delta_hat -0.008 (1456s)
+u= 400 dev deploy 0.304 | a0_hat 1.06 api_hat 0.72 delta_hat +0.011 (1576s)
+== on the ONE calibration channel H0 (20 random starts, 200 steps) ==
+  nominal-model gradient                       mean 0.063  best-of-20 0.108
+  amplitude-aware gradient (knows beta(phi))   mean 0.148  best-of-20 0.253
+  CALIBRATED (RL) gradient                     mean 0.270  best-of-20 0.366
+  oracle-model gradient                        mean 0.313  best-of-20 0.413
+  phase-offset error rmse(m,psi_true) = 0.213 rad (start 0.316)
+== FINAL on 40 TEST channels (200 relaxed steps, then round to {0,pi}; rate on the true device) ==
+  nominal-model gradient                       0.065   +polish(10 sweeps) 0.251
+  amplitude-aware gradient (knows beta(phi))   0.170   +polish(10 sweeps) 0.340
+  CALIBRATED (RL) gradient                     0.293   +polish(10 sweeps) 0.399
+  oracle-model gradient                        0.411   +polish(10 sweeps) 0.467
+  calibrated - amplitude-aware: +0.123 +- 0.025, calibrated wins on 88% of channels
+  calibrated - nominal:         +0.228 +- 0.019, wins on 100%
+DONE

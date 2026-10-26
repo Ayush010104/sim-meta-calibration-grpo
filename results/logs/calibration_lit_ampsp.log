@@ -1,0 +1,29 @@
+scenario amp_spacing: a0=1.000 api=0.697 delta=0.05 psi_std=0.316
+  dev reference nominal          0.086
+  dev reference amplitude-aware  0.135
+  dev reference oracle           0.348
+u=   0 dev deploy 0.086 | a0_hat 1.00 api_hat 1.00 delta_hat +0.000 (1s)
+u=  25 dev deploy 0.159 | a0_hat 1.01 api_hat 0.79 delta_hat +0.027 (182s)
+u=  50 dev deploy 0.174 | a0_hat 1.01 api_hat 0.68 delta_hat +0.049 (553s)
+u=  75 dev deploy 0.197 | a0_hat 1.02 api_hat 0.67 delta_hat +0.044 (884s)
+u= 100 dev deploy 0.175 | a0_hat 1.01 api_hat 0.70 delta_hat +0.044 (1125s)
+u= 125 dev deploy 0.211 | a0_hat 1.01 api_hat 0.69 delta_hat +0.026 (1334s)
+u= 150 dev deploy 0.206 | a0_hat 1.01 api_hat 0.69 delta_hat +0.045 (1541s)
+u= 175 dev deploy 0.209 | a0_hat 1.03 api_hat 0.70 delta_hat +0.056 (1745s)
+u= 200 dev deploy 0.217 | a0_hat 1.04 api_hat 0.69 delta_hat +0.065 (1949s)
+u= 225 dev deploy 0.240 | a0_hat 1.04 api_hat 0.70 delta_hat +0.049 (2135s)
+u= 250 dev deploy 0.233 | a0_hat 1.03 api_hat 0.69 delta_hat +0.052 (2303s)
+u= 275 dev deploy 0.240 | a0_hat 1.06 api_hat 0.70 delta_hat +0.059 (2474s)
+u= 300 dev deploy 0.254 | a0_hat 1.03 api_hat 0.69 delta_hat +0.038 (2643s)
+u= 325 dev deploy 0.252 | a0_hat 1.05 api_hat 0.71 delta_hat +0.059 (2811s)
+u= 350 dev deploy 0.270 | a0_hat 1.04 api_hat 0.72 delta_hat +0.061 (2979s)
+u= 375 dev deploy 0.281 | a0_hat 1.05 api_hat 0.70 delta_hat +0.064 (3148s)
+u= 400 dev deploy 0.281 | a0_hat 1.05 api_hat 0.70 delta_hat +0.061 (3318s)
+== FINAL on 40 TEST channels (200 relaxed steps, then round to {0,pi}; rate on the true device) ==
+  nominal-model gradient                       0.056   +polish(10 sweeps) 0.236
+  amplitude-aware gradient (knows beta(phi))   0.161   +polish(10 sweeps) 0.312
+  CALIBRATED (RL) gradient                     0.291   +polish(10 sweeps) 0.386
+  oracle-model gradient                        0.386   +polish(10 sweeps) 0.441
+  calibrated - amplitude-aware: +0.130 +- 0.022, calibrated wins on 95% of channels
+  calibrated - nominal:         +0.235 +- 0.019, wins on 100%
+DONE

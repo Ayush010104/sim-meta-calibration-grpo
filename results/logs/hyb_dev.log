@@ -1,0 +1,22 @@
+== grpo lr=0.02
+u=  1 queries/ch=   16 best-so-far=0.250 det(mu)=0.015 sigma=0.50 (1s)
+u= 25 queries/ch=  400 best-so-far=0.325 det(mu)=0.127 sigma=0.48 (22s)
+u= 50 queries/ch=  800 best-so-far=0.334 det(mu)=0.122 sigma=0.47 (43s)
+u=100 queries/ch= 1600 best-so-far=0.345 det(mu)=0.157 sigma=0.48 (85s)
+final det(mu) + black-box polish(10): 0.413441002368927
+== grpo lr=0.05
+u=  1 queries/ch=   16 best-so-far=0.250 det(mu)=0.076 sigma=0.51 (1s)
+u= 25 queries/ch=  400 best-so-far=0.328 det(mu)=0.112 sigma=0.55 (23s)
+u= 50 queries/ch=  800 best-so-far=0.342 det(mu)=0.157 sigma=0.53 (48s)
+u=100 queries/ch= 1600 best-so-far=0.353 det(mu)=0.142 sigma=0.46 (137s)
+final det(mu) + black-box polish(10): 0.42121368646621704
+== grpo lr=0.2
+u=  1 queries/ch=   16 best-so-far=0.250 det(mu)=0.134 sigma=0.55 (2s)
+u= 25 queries/ch=  400 best-so-far=0.307 det(mu)=0.136 sigma=0.64 (41s)
+u= 50 queries/ch=  800 best-so-far=0.317 det(mu)=0.127 sigma=0.43 (80s)
+u=100 queries/ch= 1600 best-so-far=0.340 det(mu)=0.148 sigma=0.43 (155s)
+final det(mu) + black-box polish(10): 0.38077497482299805
+== cem lr=0
+u=  1 queries/ch=   16 best-so-far=0.250 det(mu)=0.115 sigma=0.49 (3s)
+u= 25 queries/ch=  400 best-so-far=0.327 det(mu)=0.158 sigma=0.28 (53s)
+u= 50 queries/ch=  800 best-so-far=0.350 det(mu)=0.143 sigma=0.15 (126s)

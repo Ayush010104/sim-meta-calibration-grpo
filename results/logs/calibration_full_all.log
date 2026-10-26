@@ -1,0 +1,35 @@
+geometry check vs env._build_Ws: 0.0
+true device: psi std 0.316 rad | amps 1.00/0.70 | spacing err % [-3.700000047683716, 4.900000095367432, 1.5, 5.400000095367432, 2.4000000953674316, 4.5] | offsets (pitch) [[-0.019999999552965164, 0.07000000029802322], [0.27000001072883606, -0.11999999731779099], [0.11999999731779099, 0.17000000178813934], [0.03999999910593033, 0.07999999821186066], [0.12999999523162842, -0.07000000029802322], [0.03999999910593033, -0.09000000357627869]]
+  dev reference nominal                            0.043
+  dev reference amplitude-aware                    0.056
+  dev reference oracle device (CSI error remains)  0.276
+u=   0 dev 0.043 | err: psi 0.316 rad, weak amp 0.303, spacing 3.72%, offset 0.102 pitch (0s)
+u=  25 dev 0.120 | err: psi 0.311 rad, weak amp 0.142, spacing 3.63%, offset 0.060 pitch (108s)
+u=  50 dev 0.105 | err: psi 0.305 rad, weak amp 0.040, spacing 3.55%, offset 0.042 pitch (229s)
+u=  75 dev 0.140 | err: psi 0.297 rad, weak amp 0.034, spacing 3.33%, offset 0.031 pitch (348s)
+u= 100 dev 0.153 | err: psi 0.287 rad, weak amp 0.050, spacing 2.66%, offset 0.023 pitch (458s)
+u= 125 dev 0.186 | err: psi 0.281 rad, weak amp 0.057, spacing 2.96%, offset 0.020 pitch (585s)
+u= 150 dev 0.185 | err: psi 0.270 rad, weak amp 0.068, spacing 3.10%, offset 0.019 pitch (693s)
+u= 175 dev 0.190 | err: psi 0.266 rad, weak amp 0.070, spacing 2.80%, offset 0.021 pitch (810s)
+u= 200 dev 0.185 | err: psi 0.259 rad, weak amp 0.074, spacing 2.62%, offset 0.022 pitch (937s)
+u= 225 dev 0.183 | err: psi 0.254 rad, weak amp 0.078, spacing 2.31%, offset 0.022 pitch (1063s)
+u= 250 dev 0.190 | err: psi 0.250 rad, weak amp 0.055, spacing 1.93%, offset 0.021 pitch (1178s)
+u= 275 dev 0.177 | err: psi 0.247 rad, weak amp 0.077, spacing 2.43%, offset 0.015 pitch (1273s)
+u= 300 dev 0.190 | err: psi 0.242 rad, weak amp 0.072, spacing 2.93%, offset 0.015 pitch (1370s)
+u= 325 dev 0.224 | err: psi 0.241 rad, weak amp 0.088, spacing 2.66%, offset 0.019 pitch (1467s)
+u= 350 dev 0.227 | err: psi 0.240 rad, weak amp 0.082, spacing 2.32%, offset 0.013 pitch (1562s)
+u= 375 dev 0.221 | err: psi 0.237 rad, weak amp 0.095, spacing 2.79%, offset 0.016 pitch (1659s)
+u= 400 dev 0.172 | err: psi 0.239 rad, weak amp 0.085, spacing 3.15%, offset 0.013 pitch (1762s)
+u= 425 dev 0.192 | err: psi 0.241 rad, weak amp 0.097, spacing 2.87%, offset 0.015 pitch (1871s)
+u= 450 dev 0.189 | err: psi 0.237 rad, weak amp 0.077, spacing 3.25%, offset 0.013 pitch (1975s)
+u= 475 dev 0.224 | err: psi 0.235 rad, weak amp 0.097, spacing 3.82%, offset 0.014 pitch (2081s)
+u= 500 dev 0.222 | err: psi 0.232 rad, weak amp 0.108, spacing 3.51%, offset 0.018 pitch (2187s)
+== FINAL: 40 TEST channels, designer uses estimated CSI (NMSE -10 dB), 200 steps, round to {0,pi}, rate on TRUE device+channel ==
+  nominal-model gradient                             0.032   +polish(10, exact meas.) 0.228
+  amplitude-aware gradient                           0.081   +polish(10, exact meas.) 0.286
+  CALIBRATED (RL) gradient                           0.276   +polish(10, exact meas.) 0.382
+  oracle-device gradient (CSI error remains)         0.328   +polish(10, exact meas.) 0.409
+  oracle-device gradient + PERFECT CSI (upper ref)   0.388   +polish(10, exact meas.) 0.453
+  calibrated - amplitude-aware gradient: +0.195 +- 0.024, wins on 100%
+  calibrated - nominal-model gradient: +0.244 +- 0.020, wins on 100%
+DONE

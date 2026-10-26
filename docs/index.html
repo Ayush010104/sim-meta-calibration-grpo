@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meta-Calibration GRPO for Imperfect Stacked Intelligent Metasurfaces</title>
+<meta name="description" content="Bilevel reinforcement learning that learns hidden hardware non-idealities of 1-bit stacked intelligent metasurfaces from measured rates, and meta-learns them across devices.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,750&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#EDF0F3; --surface:#FFFFFF; --ink:#121925; --ink-2:#3B4555; --muted:#667183; --rule:#D5DBE3;
+  --accent:#3438C9; --accent-soft:#E3E4FA; --accent-ink:#FFFFFF;
+  --power:#9A5B00; --power-soft:#F8EBD3;
+  --ok:#1D7A55; --ok-soft:#DDF1E7;
+  --bad:#B23A3A; --bad-soft:#FAE3E1;
+  --canvas-bg:#F7F9FB; --canvas-grid:#E2E7ED;
+  --eval:#1D7A9C; --eval-soft:#DFF0F6;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0C1017; --surface:#141A24; --ink:#E7EBF1; --ink-2:#BCC4D0; --muted:#8C96A6; --rule:#263041;
+    --accent:#9A9DFF; --accent-soft:#23264A; --accent-ink:#121925;
+    --power:#F0B865; --power-soft:#352812;
+    --ok:#6FD3A6; --ok-soft:#13302A; --bad:#E8847A; --bad-soft:#3A1E1C;
+    --canvas-bg:#10151E; --canvas-grid:#1C2432;
+    --eval:#6FC7E6; --eval-soft:#122A33;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0C1017; --surface:#141A24; --ink:#E7EBF1; --ink-2:#BCC4D0; --muted:#8C96A6; --rule:#263041;
+  --accent:#9A9DFF; --accent-soft:#23264A; --accent-ink:#121925;
+  --power:#F0B865; --power-soft:#352812;
+  --ok:#6FD3A6; --ok-soft:#13302A; --bad:#E8847A; --bad-soft:#3A1E1C;
+  --canvas-bg:#10151E; --canvas-grid:#1C2432;
+  --eval:#6FC7E6; --eval-soft:#122A33;
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); font-family:var(--serif); font-size:17px; line-height:1.6; margin:0; padding-inline:20px; -webkit-font-smoothing:antialiased}
+.wrap{max-width:860px; margin-inline:auto}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--display); letter-spacing:-.02em; text-wrap:balance; margin:0}
+.mono{font-family:var(--mono)}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.mark{font-family:var(--display); font-weight:750; font-size:15px; padding-block:18px}
+.mark span{color:var(--accent)}
+
+/* ---- hero ---- */
+.hero{padding-block:28px 56px; border-bottom:1px solid var(--rule)}
+.hero h1{font-weight:750; font-size:clamp(30px,4.8vw,48px); line-height:1.06; margin-bottom:20px}
+.hero-grid{display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:32px; align-items:start}
+@media (max-width:620px){
+  .hero-grid{grid-template-columns:minmax(0,1fr)}
+  .sec-h{font-size:22px}
+}
+.hero p{font-size:18px; line-height:1.6; color:var(--ink-2); margin:0}
+.hero .byline{font-family:var(--mono); font-size:12.5px; color:var(--muted); margin-top:14px; line-height:1.6}
+.stat-card{background:var(--surface); border:1px solid var(--rule); border-radius:14px; padding:22px; text-align:center}
+.stat-num{font-family:var(--display); font-weight:750; font-size:46px; color:var(--accent); line-height:1; letter-spacing:-.02em}
+.stat-label{font-family:var(--mono); font-size:12.5px; color:var(--muted); margin-top:10px; line-height:1.5}
+.stat-sub{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:14px; padding-top:14px; border-top:1px solid var(--rule)}
+.authors{display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; margin-top:18px}
+.authors-names{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.authors-names b{color:var(--ink); font-weight:650}
+.fa-tag{font-size:8.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); background:var(--accent-soft); padding:2px 6px; border-radius:5px; margin:0 6px; vertical-align:middle; white-space:nowrap}
+.paper-link{display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--accent); background:var(--accent-soft); padding:6px 12px; border-radius:999px; text-decoration:none; white-space:nowrap}
+.paper-link:hover{opacity:.82}
+.authors-card{display:flex; flex-direction:column; align-items:center; gap:3px}
+.authors-card-name{font-family:var(--mono); font-size:14px; color:var(--ink); font-weight:650}
+.authors-card .fa-tag{margin:5px 0}
+.authors-card-co{font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+.authors-card-aff{font-family:var(--mono); font-size:11px; color:var(--muted); margin-bottom:12px}
+
+/* ---- sections ---- */
+section.proj{padding-block:52px; border-bottom:1px solid var(--rule)}
+section.proj:last-of-type{border-bottom:none}
+.sec-num{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:10px}
+.sec-h{font-weight:700; font-size:clamp(23px,3vw,30px); line-height:1.15; margin-bottom:16px}
+.sec-body{max-width:66ch; color:var(--ink-2); font-size:16px; line-height:1.65; margin-bottom:28px}
+.sec-body strong{color:var(--ink); font-weight:600}
+.figure-box{background:var(--surface); border:1px solid var(--rule); border-radius:14px; padding:22px}
+.cap{font-family:var(--mono); font-size:12px; color:var(--muted); fill:var(--muted); line-height:1.6; margin-top:14px}
+.arch-headline{font-family:var(--display); font-weight:750; font-size:clamp(18px,2.6vw,24px); text-align:center; margin-top:18px; color:var(--ink)}
+.arch-img-card{background:#fff; padding:16px; display:flex; justify-content:center}
+.arch-img{width:100%; height:auto; max-width:900px; display:block; border-radius:6px}
+
+/* ---- section 1: MDP loop ---- */
+.mdp-svg{width:100%; height:auto; display:block}
+.mdp-node{fill:var(--canvas-bg); stroke:var(--rule); stroke-width:1.3; filter:drop-shadow(0 1px 3px rgba(20,30,60,.06))}
+.mdp-node.state-node{fill:var(--accent-soft); stroke:var(--accent)}
+.mdp-node.action-node{fill:var(--power-soft); stroke:var(--power)}
+.mdp-node.next-node{fill:var(--ok-soft); stroke:var(--ok)}
+.mdp-node.objective-node{fill:var(--eval-soft); stroke:var(--eval)}
+.mdp-eyebrow{font-family:var(--mono); font-size:9.5px; font-weight:650; letter-spacing:.09em}
+.mdp-eyebrow.state-text{fill:var(--accent)}
+.mdp-eyebrow.action-text{fill:var(--power)}
+.mdp-eyebrow.next-text{fill:var(--ok)}
+.mdp-eyebrow.objective-text{fill:var(--eval)}
+.mdp-label{font-family:var(--display); font-weight:650; font-size:14px; fill:var(--ink)}
+.mdp-math{font-family:var(--mono); font-size:12.5px; font-weight:500; fill:var(--ink)}
+.mdp-sub{font-family:var(--mono); font-size:9.5px; fill:var(--muted)}
+.mdp-note{fill:var(--surface); stroke:var(--rule); stroke-width:1.2; stroke-dasharray:3,3}
+.mdp-note-text{font-family:var(--mono); font-size:10px; font-weight:650; letter-spacing:.04em; fill:var(--ink-2)}
+.mdp-arrow{stroke:var(--ink-2); stroke-width:1.8; fill:none; marker-end:url(#mdp-arrowhead)}
+.mdp-feedback{stroke:var(--muted); stroke-width:1.5; stroke-dasharray:4,3; fill:none; marker-end:url(#mdp-arrowhead)}
+.mdp-caption-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; fill:var(--muted)}
+.mdp-pulse{fill:var(--accent)}
+.mdp-pulse-glow{fill:var(--accent); opacity:.45}
+body.reduced-motion .mdp-pulse,
+body.reduced-motion .mdp-pulse-glow{ display:none }
+.mdp-badge{display:flex; align-items:center; font-family:var(--mono); font-size:11.5px; font-weight:600; letter-spacing:.03em; color:var(--ink-2); background:var(--canvas-bg); border:1px solid var(--rule); border-radius:8px; padding:9px 13px; margin-bottom:16px; line-height:1.5}
+.mdp-dot{display:inline-block; width:7px; height:7px; min-width:7px; border-radius:50%; background:var(--accent); margin-right:9px; box-shadow:0 0 0 3px var(--accent-soft)}
+
+/* ---- section 2: system geometry ---- */
+.sysvar-row{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+@media (max-width:560px){ .sysvar-row{grid-template-columns:1fr} }
+
+/* ---- MDP: proposed vs conventional comparison ---- */
+.mdpcmp-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px}
+@media (max-width:620px){ .mdpcmp-row{grid-template-columns:1fr} }
+.mdpcmp-card{border:1.5px solid var(--rule); border-radius:12px; padding:16px 18px; background:var(--canvas-bg)}
+.mdpcmp-card.proposed{border-color:var(--ok)}
+.mdpcmp-card.conventional{border-color:var(--muted)}
+.mdpcmp-title{font-family:var(--display); font-weight:700; font-size:14px; margin-bottom:10px}
+.mdpcmp-card.proposed .mdpcmp-title{color:var(--ok)}
+.mdpcmp-card.conventional .mdpcmp-title{color:var(--ink-2)}
+.mdpcmp-row2{font-family:var(--mono); font-size:11.5px; color:var(--ink-2); line-height:1.5; margin-bottom:8px}
+.mdpcmp-row2 b{color:var(--ink); font-weight:650}
+.mdpcmp-verdict{font-family:var(--mono); font-size:11px; line-height:1.5; margin-top:10px; padding-top:10px; border-top:1px dashed var(--rule)}
+.mdpcmp-card.proposed .mdpcmp-verdict{color:var(--ok)}
+.mdpcmp-card.conventional .mdpcmp-verdict{color:var(--ink-2)}
+.mdpcmp-subtitle{font-family:var(--mono); font-size:10.5px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
+.mdpcmp-desc{font-size:12.5px; color:var(--ink-2); line-height:1.5; margin-bottom:12px}
+.mdpcmp-traj{width:100%; height:auto; display:block; margin-bottom:12px; background:var(--surface); border-radius:8px}
+.traj-dot{fill:var(--muted)}
+.traj-path{fill:none; stroke:var(--muted); stroke-width:1.3; stroke-dasharray:2.5,3}
+.mdpcmp-card.proposed .traj-dot{fill:var(--ok)}
+.mdpcmp-card.proposed .traj-path{stroke:var(--ok); stroke-dasharray:none}
+.mdp-ground{display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-family:var(--mono); font-size:11.5px; color:var(--ink-2); background:var(--canvas-bg); border:1px solid var(--rule); border-radius:8px; padding:10px 14px; margin-top:16px}
+.mdp-ground .sym{font-weight:700; padding:1px 6px; border-radius:5px}
+.mdp-ground .sym.phi{color:var(--accent); background:var(--accent-soft)}
+.mdp-ground .sym.f{color:var(--power); background:var(--power-soft)}
+
+/* ---- MDP: vertical stage-by-stage flow ---- */
+.mdp-flow{display:flex; flex-direction:column; align-items:center; padding:4px 0 2px}
+.mdp-flow-stage{width:100%; max-width:480px; text-align:center; padding:16px 22px; border-radius:14px}
+.mdp-flow-stage.boxed{background:var(--canvas-bg); border:1.5px solid var(--rule)}
+.mdp-flow-stage.policy.boxed{border-color:var(--power)}
+.mdp-flow-stage.env.boxed{border-color:var(--ok)}
+.mdp-flow-title{font-family:var(--display); font-weight:700; font-size:18px; color:var(--ink); margin-bottom:9px}
+.mdp-flow-math{font-family:Georgia,"Source Serif 4",serif; font-style:italic; font-size:21px; color:var(--ink); margin-bottom:8px; letter-spacing:.01em}
+.mdp-flow-math sub{font-size:0.6em; font-style:normal}
+.mdp-flow-desc{font-family:var(--mono); font-size:12px; color:var(--muted)}
+.mdp-flow-arrow{font-size:19px; color:var(--muted); padding:9px 0; line-height:1}
+.mdp-flow-feedback{margin-top:16px; font-family:var(--mono); font-size:12.5px; color:var(--ok); display:flex; align-items:center; gap:7px; justify-content:center; text-align:center}
+.sysvar-card{border:1px solid var(--rule); border-radius:12px; padding:16px 18px; background:var(--canvas-bg)}
+.sysvar-card.theta{border-color:color-mix(in srgb, var(--accent) 35%, var(--rule))}
+.sysvar-card.power{border-color:color-mix(in srgb, var(--power) 35%, var(--rule))}
+.sysvar-sym{font-family:var(--mono); font-size:22px; font-weight:650; margin-bottom:6px}
+.sysvar-card.theta .sysvar-sym{color:var(--accent)}
+.sysvar-card.power .sysvar-sym{color:var(--power)}
+.sysvar-name{font-family:var(--display); font-weight:650; font-size:14.5px; color:var(--ink); margin-bottom:5px}
+.sysvar-desc{font-size:13px; color:var(--ink-2); line-height:1.5}
+
+/* ---- formal objective block ---- */
+.obj-block{background:var(--canvas-bg); border:1.5px solid var(--rule); border-radius:12px; padding:26px 24px 24px; margin:4px 0 2px}
+.obj-grid{display:grid; grid-template-columns:auto 1fr; column-gap:16px; row-gap:12px; width:100%; max-width:540px; margin-inline:auto}
+.obj-label{font-family:Georgia,"Source Serif 4",serif; font-weight:650; font-size:18px; color:var(--ink); text-align:right; white-space:nowrap; align-self:start; padding-top:1px}
+.obj-label.small{font-size:14.5px; color:var(--ink-2); font-weight:600}
+.obj-vars{font-size:0.56em; font-style:italic; font-weight:500; vertical-align:sub; margin-left:1px}
+.obj-math{font-family:Georgia,"Source Serif 4",serif; font-style:italic; font-size:18px; color:var(--ink); text-align:left}
+.obj-math.small{font-size:14.5px; color:var(--ink-2)}
+@media (max-width:480px){
+  .obj-grid{column-gap:10px}
+  .obj-label{font-size:14px}
+  .obj-math{font-size:14px}
+  .obj-label.small, .obj-math.small{font-size:12px}
+}
+.geo-svg{width:100%; max-width:600px; height:auto; display:block; margin-inline:auto}
+.geo-node{fill:var(--canvas-bg); stroke:var(--ink-2); stroke-width:1.3}
+.geo-node.tx{fill:var(--accent-soft); stroke:var(--accent)}
+.geo-node.rx{fill:var(--ok-soft); stroke:var(--ok)}
+.geo-node.ris{fill:var(--power-soft); stroke:var(--power)}
+.geo-label{font-family:var(--mono); font-size:10.5px; fill:var(--ink)}
+.geo-sub{font-family:var(--mono); font-size:9px; fill:var(--muted)}
+.geo-link{stroke:var(--rule); stroke-width:1.2; fill:none}
+.geo-link.direct{stroke-dasharray:3,3}
+.geo-axis{stroke:var(--rule); stroke-width:1}
+.geo-axis-label{font-family:var(--mono); font-size:9px; fill:var(--muted)}
+
+/* ---- section 3: SAC architecture ---- */
+.nn-icon{stroke:currentColor; stroke-width:.7; opacity:.5; fill:currentColor}
+.nn-icon circle{opacity:1}
+.nn-icon.phase{color:var(--accent)}
+.nn-icon.power{color:var(--power)}
+.nn-icon.neutral{color:var(--ink-2); opacity:.8}
+.nn-icon.ghost{color:var(--muted); opacity:.5}
+.arch-box{fill:var(--canvas-bg); stroke:var(--rule)}
+.arch-box.core{fill:var(--surface); stroke:var(--ink); stroke-width:1.4}
+.arch-label{font-family:var(--display); font-weight:650; font-size:12.5px; fill:var(--ink)}
+.arch-label.small{font-size:11.5px}
+.arch-sub{font-family:var(--mono); font-size:9px; fill:var(--muted)}
+.arch-eyebrow{font-family:var(--mono); font-size:9px; font-weight:650; letter-spacing:.07em; fill:var(--muted)}
+.arch-ghost{fill:none; stroke:var(--muted); stroke-width:1.1; stroke-dasharray:3,3; opacity:.6}
+.arch-ghost-arrow{fill:none; stroke:var(--muted); stroke-width:1.1; stroke-dasharray:3,3; opacity:.6}
+.arch-ghost-text{font-family:var(--mono); font-size:9px; fill:var(--muted); opacity:.8}
+.arch-ghost-text.label{font-size:10.5px; font-weight:650}
+.arch-small-label{font-family:var(--mono); font-size:10px; font-weight:650}
+.arch-small-label.phase{fill:var(--accent)}
+.arch-small-label.power{fill:var(--power)}
+
+/* ---- episodic training strip ---- */
+.ep-strip{display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-family:var(--mono); font-size:11.5px; color:var(--ink-2); background:var(--canvas-bg); border:1px solid var(--rule); border-radius:8px; padding:10px 14px; margin-bottom:16px}
+.ep-strip b{color:var(--ink)}
+.ep-arrow{color:var(--muted)}
+
+/* ---- section 4: results ---- */
+.toggle-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px}
+.toggle-btn{display:flex; flex-direction:column; align-items:flex-start; gap:4px; padding:10px 14px; border-radius:12px; border:1px solid var(--rule); background:var(--surface); cursor:pointer; text-align:left}
+.toggle-label{font-family:var(--display); font-size:13px; font-weight:650; color:var(--ink)}
+.toggle-formula{font-family:var(--mono); font-size:11px; color:var(--muted)}
+.toggle-btn[aria-pressed="true"]{background:var(--ink); border-color:var(--ink)}
+.toggle-btn[aria-pressed="true"] .toggle-label{color:var(--ground)}
+.toggle-btn[aria-pressed="true"] .toggle-formula{color:var(--ground); opacity:.8}
+.chart-svg{width:100%; height:auto; display:block; background:var(--canvas-bg); border-radius:8px}
+.chart-cursor{stroke:var(--ink-2); stroke-width:1; stroke-dasharray:3,3}
+.rate-line{fill:none; stroke:var(--accent); stroke-width:1.8}
+.ep-line{fill:none; stroke:var(--ok); stroke-width:2.2}
+.ep-dot{fill:var(--ok)}
+.demo-controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+.demo-controls input[type=range]{flex:1; min-width:80px; accent-color:var(--accent)}
+.demo-controls label{font-family:var(--mono); font-size:11px; color:var(--muted)}
+.demo-controls .mono{font-family:var(--mono); font-size:11px; color:var(--muted); white-space:nowrap}
+.btn{font-family:var(--mono); font-size:13px; padding:9px 16px; border-radius:8px; border:1px solid var(--rule); background:var(--surface); color:var(--ink); cursor:pointer}
+.btn.primary{background:var(--ink); color:var(--ground); border-color:var(--ink)}
+.btn.primary:hover{background:var(--accent); border-color:var(--accent)}
+.demo-legend{display:flex; gap:16px; margin-top:14px; font-family:var(--mono); font-size:11.5px; color:var(--muted); flex-wrap:wrap}
+.demo-legend .sw{display:inline-block; width:12px; height:3px; border-radius:2px; margin-right:5px; vertical-align:middle}
+.demo-legend-val{color:var(--ink); font-weight:650}
+.demo-grid{display:grid; grid-template-columns:minmax(0,1fr); gap:20px}
+.env3d-stage{position:relative; width:100%; height:340px; border-radius:10px; background:var(--canvas-bg); overflow:hidden; cursor:grab}
+.env3d-stage.dragging{cursor:grabbing}
+.env3d-stage canvas{display:block; width:100%; height:100%}
+.env3d-label{position:absolute; transform:translate(-50%,-100%); font-family:var(--mono); font-size:10px; font-weight:500; color:var(--ink); background:color-mix(in srgb, var(--surface) 78%, transparent); padding:1px 5px; border-radius:4px; white-space:nowrap; pointer-events:none}
+.env3d-label-muted{color:var(--muted); font-weight:400}
+.env3d-label-strong{color:var(--ink); font-weight:650; font-size:10px; letter-spacing:.01em; text-transform:uppercase; background:color-mix(in srgb, var(--surface) 90%, transparent)}
+.stat-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:20px}
+.stat-chip{border:1px solid var(--rule); border-radius:10px; padding:14px 16px; background:var(--canvas-bg)}
+.stat-chip .num{font-family:var(--display); font-weight:750; font-size:22px; color:var(--ok)}
+.stat-chip .lbl{font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:4px; line-height:1.4}
+
+/* ---- closing ---- */
+.closing{padding-block:52px; text-align:left}
+.closing p{max-width:68ch; font-size:17px; color:var(--ink-2); line-height:1.65}
+.closing .pill{display:inline-block; font-family:var(--mono); font-size:12px; color:var(--ok); background:var(--ok-soft); padding:5px 11px; border-radius:999px; margin-bottom:16px}
+footer{padding-block:28px 40px; font-family:var(--mono); font-size:11.5px; color:var(--muted)}
+
+/* ---- page 3 additions ---- */
+.subsec-h{font-family:var(--display); font-weight:700; font-size:17px; margin:30px 0 12px}
+.res-table{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:12.5px; background:var(--surface)}
+.res-table th,.res-table td{padding:10px 10px; border-bottom:1px solid var(--rule); text-align:right; vertical-align:top}
+.res-table th:first-child,.res-table td:first-child{text-align:left}
+.res-table th{color:var(--muted); font-weight:600; font-size:11px; letter-spacing:.04em; text-transform:uppercase}
+.res-table td.win{color:var(--ok); font-weight:650}
+.res-table tr:last-child td{border-bottom:none}
+.table-scroll{overflow-x:auto}
+.res-table{min-width:600px}
+.res-table td:first-child{min-width:190px}
+.stat-chip .num.bad{color:var(--bad)}
+.lesson-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
+.lesson{border:1px solid var(--rule); border-radius:12px; padding:14px 16px; background:var(--canvas-bg)}
+.lesson .tag{font-family:var(--mono); font-size:10.5px; font-weight:650; letter-spacing:.06em; text-transform:uppercase}
+.lesson.yes .tag{color:var(--ok)} .lesson.no .tag{color:var(--bad)} .lesson.main .tag{color:var(--accent)}
+.lesson.main{border-color:var(--accent)}
+.lesson h4{font-family:var(--display); font-weight:700; font-size:15px; margin:6px 0 6px}
+.lesson p{font-size:13.5px; color:var(--ink-2); margin:0; line-height:1.5}
+.limits{font-size:15px; color:var(--ink-2); line-height:1.6; padding-left:20px; margin:0; max-width:66ch}
+.limits li{margin-bottom:8px}
+.hero-links{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mark">Ayush B. Patel<span>.</span></div>
+
+  <header class="hero">
+    <h1>Meta-Calibration GRPO: Teaching an RL Agent What Imperfect Metasurface Hardware Really Is</h1>
+    <div class="hero-grid">
+      <div>
+        <p>Gradient methods are excellent at configuring stacked intelligent metasurfaces &mdash; as long as the hardware behaves exactly like its model. Real devices never do. I built a bilevel reinforcement-learning framework in which a critic-free GRPO policy learns a device's hidden non-idealities from measured data rates alone, hands a corrected model to a fast gradient solver, and meta-learns that knowledge across devices from the same fabrication batch.</p>
+        <div class="authors">
+          <span class="authors-names"><b>Ayush B. Patel</b><span class="fa-tag">first author</span>&amp; Abhishek Jindal &middot; DAIICT</span>
+        </div>
+        <div class="hero-links">
+          <a class="paper-link" href="https://github.com/Ayush010104/sim-meta-calibration-grpo" target="_blank" rel="noopener">Code &middot; GitHub &#8599;</a>
+          <span class="paper-link" style="cursor:default">Manuscript in preparation</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3.4&times;</div>
+        <div class="stat-label">worst-user rate vs. model-based gradient design, with all hardware impairments active</div>
+        <div class="stat-sub">better on 100% of 40 held-out channels &middot; 84% of oracle</div>
+      </div>
+    </div>
+    <div class="byline">Group-Relative Policy Optimization &middot; Meta-Learning (Reptile) &middot; Bilevel Optimization &middot; 1-bit Stacked Intelligent Metasurfaces &middot; Hardware Calibration</div>
+  </header>
+
+  <!-- ===== 01 PROBLEM ===== -->
+  <section class="proj" id="problem">
+    <div class="eyebrow sec-num">01 &mdash; The problem</div>
+    <h2 class="sec-h">A perfect optimizer for a device that does not exist</h2>
+    <p class="sec-body">A stacked intelligent metasurface (SIM) is a stack of programmable layers that beamforms in the wave domain. Here: <strong>6 layers &times; 64 one-bit elements (384 binary phases)</strong> serving <strong>10 users</strong> with max-min fairness at 28&nbsp;GHz. I implemented an exact relaxed-gradient solver &mdash; every element relaxed as x&nbsp;=&nbsp;tanh(&beta;w), &beta; annealed 1&rarr;5, ascent on a smooth minimum of the user rates, then rounded to phases {0,&nbsp;&pi;}. With a perfect model it beats my RL agent. That honest benchmark redirected the project.</p>
+    <p class="sec-body">Real hardware is never the model: phase-tuning errors, state-dependent amplitudes, inter-layer spacing and alignment errors, imperfect channel knowledge, noisy feedback. The gradient differentiates the <em>assumed</em> rate &mdash; and nothing about the real device ever flows back.</p>
+    <div class="stat-row">
+      <div class="stat-chip"><div class="num bad">79%</div><div class="lbl">gradient rate kept at CSI NMSE &minus;10&nbsp;dB</div></div>
+      <div class="stat-chip"><div class="num bad">50%</div><div class="lbl">kept with 0.3&nbsp;rad element phase mismatch</div></div>
+      <div class="stat-chip"><div class="num bad">11%</div><div class="lbl">kept with 0.6&nbsp;rad element phase mismatch</div></div>
+      <div class="stat-chip"><div class="num">+24%</div><div class="lbl">best-of-16 restarts even with a perfect model &mdash; the landscape is multi-modal</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 02 METHOD ===== -->
+  <section class="proj" id="method">
+    <div class="eyebrow sec-num">02 &mdash; Proposed method</div>
+    <h2 class="sec-h">RL learns the device; the gradient solves the channel</h2>
+    <p class="sec-body">Hardware errors belong to the <strong>device</strong>, shared by every channel. So instead of learning a configuration per channel, the RL policy learns <strong>what the device actually is</strong>: 384 phase offsets, per-layer state amplitudes, per-layer spacing and lateral offsets. Each candidate model is judged only by the rate the real device delivers when the gradient solver trusts it.</p>
+    <div class="figure-box">
+      <div class="mdp-badge"><span class="mdp-dot"></span>SAMPLE DEVICE MODELS &rarr; GRADIENT-SOLVE UNDER EACH &rarr; MEASURE REAL RATE &rarr; GROUP-RELATIVE UPDATE</div>
+      <div class="mdp-flow" role="img" aria-label="Calibration-GRPO loop">
+        <div class="mdp-flow-stage boxed policy">
+          <div class="mdp-flow-title">GRPO policy over the device</div>
+          <div class="mdp-flow-math">&theta;&#770; ~ &#119977;(m, s&sup2;I)</div>
+          <div class="mdp-flow-desc">48 antithetic guesses of phase offsets, amplitudes, geometry</div>
+        </div>
+        <div class="mdp-flow-arrow">&darr;</div>
+        <div class="mdp-flow-stage boxed">
+          <div class="mdp-flow-title">Same relaxed-gradient solver</div>
+          <div class="mdp-flow-math">x = tanh(&beta;w) &rarr; sign(w) &isin; {&plusmn;1}</div>
+          <div class="mdp-flow-desc">designs configurations as if the guess were the true device</div>
+        </div>
+        <div class="mdp-flow-arrow">&darr;</div>
+        <div class="mdp-flow-stage boxed env">
+          <div class="mdp-flow-title">Real device, measured rate</div>
+          <div class="mdp-flow-math">R = min<sub>k</sub> rate<sub>k</sub>(true device)</div>
+          <div class="mdp-flow-desc">scalar, noisy, non-differentiable &mdash; no gradient through hardware</div>
+        </div>
+        <div class="mdp-flow-arrow">&darr;</div>
+        <div class="mdp-flow-stage">
+          <div class="mdp-flow-title">Group-relative advantage</div>
+          <div class="mdp-flow-math">A<sub>g</sub> = (R<sub>g</sub> &minus; R&#772;) / &sigma;<sub>R</sub></div>
+          <div class="mdp-flow-desc">keep guesses that beat their group; common random numbers</div>
+        </div>
+        <div class="mdp-flow-feedback">&#8624;&nbsp;Updated device model feeds the next round</div>
+      </div>
+      <p class="cap">Bilevel view: the outer RL loop learns parameters shared across all channel-tasks; the inner gradient solver adapts per channel. RL supplies what the gradient lacks &mdash; a correct model; the gradient supplies what RL lacks &mdash; fast per-channel optimization.</p>
+    </div>
+    <h3 class="subsec-h">Side by side</h3>
+    <div class="figure-box arch-img-card">
+      <img class="arch-img" src="assets/Fig16_gradient_vs_rl_schematic.png" alt="Schematic: the normal gradient method runs once on an assumed model; Calibration-GRPO wraps the same solver in a loop driven by measured rates on the real device.">
+    </div>
+  </section>
+
+  <!-- ===== 03 RESULTS ===== -->
+  <section class="proj" id="results">
+    <div class="eyebrow sec-num">03 &mdash; Results</div>
+    <h2 class="sec-h">Under realistic impairments, calibration wins on every channel</h2>
+    <p class="sec-body">40 held-out test channels; every rate is measured on the true device with phases exactly in {0,&nbsp;&pi;}. The final row switches on everything at once: element phase-tuning error, state-dependent amplitude (1.00 / 0.70), per-layer spacing and lateral offsets, CSI error at NMSE &minus;10&nbsp;dB and &plusmn;5% noisy rate feedback.</p>
+    <div class="figure-box table-scroll">
+      <table class="res-table">
+        <thead><tr><th>Scenario</th><th>Gradient, ideal model</th><th>Gradient, amplitude-aware</th><th>Gradient + Calibration-GRPO</th><th>Oracle model</th></tr></thead>
+        <tbody>
+          <tr><td>Phase error + amplitude imbalance</td><td>0.065</td><td>0.170</td><td class="win">0.310</td><td>0.411</td></tr>
+          <tr><td>&hellip; + 5% layer-spacing error</td><td>0.056</td><td>0.161</td><td class="win">0.291</td><td>0.386</td></tr>
+          <tr><td>All impairments incl. CSI error &amp; noisy feedback</td><td>0.032</td><td>0.081</td><td class="win">0.276</td><td>0.328*</td></tr>
+        </tbody>
+      </table>
+      <p class="cap">Worst-user rate in bit/s/Hz. *Oracle device with the same CSI error; with perfect CSI it reaches 0.388.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-chip"><div class="num">3.4&times;</div><div class="lbl">vs. amplitude-aware gradient, all impairments (+0.195 &plusmn; 0.024)</div></div>
+      <div class="stat-chip"><div class="num">100%</div><div class="lbl">of test channels improved</div></div>
+      <div class="stat-chip"><div class="num">84%</div><div class="lbl">of the best achievable with that CSI</div></div>
+      <div class="stat-chip"><div class="num">0</div><div class="lbl">device queries per new channel after calibration (vs. ~3,800 for bit-flip search)</div></div>
+    </div>
+    <h3 class="subsec-h">It recovers the physics, not just a better score</h3>
+    <div class="figure-box arch-img-card">
+      <img class="arch-img" src="assets/Fig17_gradient_vs_rl_results.png" alt="Four panels: bar comparison of methods; per-channel scatter with RL above the diagonal on 92-95% of channels; learning curve from measured rate only; learned weak-state amplitude and spacing error converging toward the true values.">
+    </div>
+    <p class="cap">Weak-state amplitude 0.70 learned as 0.70&ndash;0.72; lateral layer offsets 0.10 &rarr; 0.018 element pitch; phase offsets 0.32 &rarr; 0.21&ndash;0.23&nbsp;rad &mdash; all from scalar rate feedback. Calibrating on a single channel generalized to unseen channels almost as well as a 200-channel pool (0.293 vs 0.310).</p>
+  </section>
+
+  <!-- ===== 04 META ===== -->
+  <section class="proj" id="meta">
+    <div class="eyebrow sec-num">04 &mdash; Meta-Calibration across devices</div>
+    <h2 class="sec-h">Every new device should not start from zero</h2>
+    <p class="sec-body">Devices from one fabrication batch share systematic errors (a common phase-error pattern, spacing bias, typical amplitude imbalance) on top of their own device-specific errors. <strong>Meta-Calibration-GRPO</strong> runs Reptile over device-tasks with Calibration-GRPO as the inner learner: 120 simulated devices, 25 inner updates each. A new device then starts from the learned prior instead of the ideal model.</p>
+    <div class="figure-box arch-img-card">
+      <img class="arch-img" src="assets/Fig18_meta_calibration_new_devices.png" alt="Left: rate versus calibration updates on three unseen devices, meta prior starting near 0.13 and reaching 0.19 by 20 updates while nominal start reaches 0.15 only at 100. Right: test rates after 100 updates, meta prior above from-scratch calibration on all three devices.">
+    </div>
+    <div class="stat-row">
+      <div class="stat-chip"><div class="num">2.8&times;</div><div class="lbl">rate before a single measurement on the new device</div></div>
+      <div class="stat-chip"><div class="num">5&ndash;10&times;</div><div class="lbl">fewer rate measurements to match from-scratch calibration</div></div>
+      <div class="stat-chip"><div class="num">+50&ndash;60%</div><div class="lbl">final worst-user rate, 3 / 3 unseen devices</div></div>
+    </div>
+    <p class="cap">The prior absorbs the shared batch structure (phase-pattern error 0.316 &rarr; 0.199&nbsp;rad, amplitude 0.69 vs batch 0.70); the inner GRPO then adapts the device-specific amplitude and geometry.</p>
+  </section>
+
+  <!-- ===== 05 LESSONS ===== -->
+  <section class="proj" id="lessons">
+    <div class="eyebrow sec-num">05 &mdash; What nine meta-learning variants taught me</div>
+    <h2 class="sec-h">Meta-learning pays when tasks share structure &mdash; not when they drift</h2>
+    <p class="sec-body">Before the calibration work, the project systematically tested meta-learning for user mobility: Reptile meta-prior ensembles, attention-based reset rules, single-copy Reptile / periodic-EMA / proximal Reptile / FOMAML, a changed (flip) MDP, offline Reptile initialization and meta-learned unrolled optimizers.</p>
+    <div class="lesson-grid">
+      <div class="lesson no"><div class="tag">does not help</div><h4>Online tracking of a drifting channel</h4><p>No single-copy meta-learner beat a plain warm start (best Reptile: 99.3%) &mdash; consecutive channels are nearly identical, so the last weights are already the best prior.</p></div>
+      <div class="lesson yes"><div class="tag">helps</div><h4>Offline across a channel distribution</h4><p>Reptile meta-initialization of GRPO: +0.26&nbsp;bit/s/Hz at 50 updates on 250 unseen mobile-user channels (92% improved), ~7&times; fewer updates to the cold start's level.</p></div>
+      <div class="lesson main"><div class="tag">helps most</div><h4>Across devices from one batch</h4><p>Meta-Calibration-GRPO &mdash; where RL matters (hardware mismatch) and meta-learning matters (shared fabrication structure) at the same time.</p></div>
+    </div>
+    <h3 class="subsec-h">The reality check that redirected the project</h3>
+    <div class="figure-box arch-img-card">
+      <img class="arch-img" src="assets/Fig15_grpo_500.png" alt="GRPO from cold and meta initialization over 500 updates against the relaxed-gradient baseline, which stays above both.">
+    </div>
+    <p class="cap">With a perfect model, 500 GRPO updates (cold or meta-initialized) stay below the relaxed-gradient solver &mdash; the result that motivated targeting model mismatch instead.</p>
+  </section>
+
+  <!-- ===== 06 SCOPE ===== -->
+  <section class="proj" id="scope">
+    <div class="eyebrow sec-num">06 &mdash; Scope and next steps</div>
+    <h2 class="sec-h">What is shown, and what is not yet</h2>
+    <ul class="limits">
+      <li>RL does <strong>not</strong> beat gradients with a perfect model; the claim is specific to hardware model mismatch.</li>
+      <li>Impairment magnitudes are modeling assumptions; each calibration scenario is one simulated device and one run; meta-calibration was evaluated on 3 held-out devices and assumes devices share batch-level errors.</li>
+      <li>Next: more devices and seeds, a non-RL black-box baseline (evolution strategies) on the same unknowns, literature-calibrated impairment magnitudes, and drift / recalibration.</li>
+      <li>All results are simulation.</li>
+    </ul>
+  </section>
+
+  <section class="closing">
+    <span class="pill">Patel &amp; Jindal &middot; DAIICT &middot; in preparation</span>
+    <p>An exact gradient solver is the right tool when the model is right. When it is not, a critic-free group-relative policy can learn the model itself from measured rates alone &mdash; recovering the hardware's hidden phase errors, amplitudes and geometry, lifting the worst user's rate 3.4-fold under combined impairments, and, meta-learned across a fabrication batch, calibrating each new device with 5&ndash;10&times; fewer measurements.</p>
+  </section>
+
+  <footer>&copy; 2026 Ayush Brijesh Patel &middot; Meta-Calibration GRPO for Imperfect Stacked Intelligent Metasurfaces &middot; <a href="https://github.com/Ayush010104/sim-meta-calibration-grpo">code</a></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+pool 200 dev 10; sigma_true=0.3; ||psi||rms=0.277
+dev reference: nominal-model gradient 0.193 | oracle-model gradient 0.502
+u=   0 dev deploy-rate=0.193  rmse(m,psi)=0.275 (prior rmse 0.275)  s=0.150 (0s)
+u=  20 dev deploy-rate=0.205  rmse(m,psi)=0.274 (prior rmse 0.275)  s=0.150 (35s)
+u=  40 dev deploy-rate=0.209  rmse(m,psi)=0.271 (prior rmse 0.275)  s=0.150 (68s)
+u=  60 dev deploy-rate=0.216  rmse(m,psi)=0.268 (prior rmse 0.275)  s=0.150 (104s)
+u=  80 dev deploy-rate=0.216  rmse(m,psi)=0.265 (prior rmse 0.275)  s=0.150 (137s)
+u= 100 dev deploy-rate=0.247  rmse(m,psi)=0.262 (prior rmse 0.275)  s=0.150 (164s)
+u= 120 dev deploy-rate=0.244  rmse(m,psi)=0.259 (prior rmse 0.275)  s=0.150 (190s)
+u= 140 dev deploy-rate=0.250  rmse(m,psi)=0.256 (prior rmse 0.275)  s=0.150 (217s)
+u= 160 dev deploy-rate=0.208  rmse(m,psi)=0.253 (prior rmse 0.275)  s=0.150 (243s)
+u= 180 dev deploy-rate=0.265  rmse(m,psi)=0.250 (prior rmse 0.275)  s=0.150 (268s)
+u= 200 dev deploy-rate=0.271  rmse(m,psi)=0.247 (prior rmse 0.275)  s=0.150 (294s)
+u= 220 dev deploy-rate=0.305  rmse(m,psi)=0.245 (prior rmse 0.275)  s=0.150 (321s)
+u= 240 dev deploy-rate=0.258  rmse(m,psi)=0.242 (prior rmse 0.275)  s=0.150 (356s)
+u= 260 dev deploy-rate=0.300  rmse(m,psi)=0.239 (prior rmse 0.275)  s=0.150 (396s)
+u= 280 dev deploy-rate=0.300  rmse(m,psi)=0.237 (prior rmse 0.275)  s=0.150 (445s)
+u= 300 dev deploy-rate=0.277  rmse(m,psi)=0.234 (prior rmse 0.275)  s=0.150 (495s)
+saved
