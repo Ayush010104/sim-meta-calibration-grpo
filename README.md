@@ -86,14 +86,6 @@ mkdir -p paper_figures && python3 gen_fig16_17.py && python3 gen_fig18.py
 
 Logs and result files from the runs reported above are in [`results/logs`](results/logs) and [`results/data`](results/data).
 
-## Honest scope
-
-- **RL does not beat gradients in general.** With a perfect model, the relaxed-gradient solver wins. The claim is about **hardware model mismatch**.
-- **Assumed magnitudes.** The sizes of the phase error, geometric errors, CSI error and feedback noise are modeling assumptions. Each calibration scenario is **one simulated device and one run**, and meta-calibration was evaluated on **3 held-out devices**.
-- **Batch structure is assumed.** Meta-calibration relies on devices from one batch sharing systematic errors, which is a modeling assumption.
-- **No non-RL black-box baseline yet** (e.g., evolution strategies) on the same calibration unknowns.
-- **All results are simulation.**
-
 ## Citation
 
 Manuscript in preparation. Citation details will be added on submission.

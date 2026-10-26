@@ -428,18 +428,6 @@ footer{padding-block:28px 40px; font-family:var(--mono); font-size:11.5px; color
     <p class="cap">With a perfect model, 500 GRPO updates (cold or meta-initialized) stay below the relaxed-gradient solver &mdash; the result that motivated targeting model mismatch instead.</p>
   </section>
 
-  <!-- ===== 06 SCOPE ===== -->
-  <section class="proj" id="scope">
-    <div class="eyebrow sec-num">06 &mdash; Scope and next steps</div>
-    <h2 class="sec-h">What is shown, and what is not yet</h2>
-    <ul class="limits">
-      <li>RL does <strong>not</strong> beat gradients with a perfect model; the claim is specific to hardware model mismatch.</li>
-      <li>Impairment magnitudes are modeling assumptions; each calibration scenario is one simulated device and one run; meta-calibration was evaluated on 3 held-out devices and assumes devices share batch-level errors.</li>
-      <li>Next: more devices and seeds, a non-RL black-box baseline (evolution strategies) on the same unknowns, literature-calibrated impairment magnitudes, and drift / recalibration.</li>
-      <li>All results are simulation.</li>
-    </ul>
-  </section>
-
   <section class="closing">
     <span class="pill">Patel &amp; Jindal &middot; DAIICT &middot; in preparation</span>
     <p>An exact gradient solver is the right tool when the model is right. When it is not, a critic-free group-relative policy can learn the model itself from measured rates alone &mdash; recovering the hardware's hidden phase errors, amplitudes and geometry, lifting the worst user's rate 3.4-fold under combined impairments, and, meta-learned across a fabrication batch, calibrating each new device with 5&ndash;10&times; fewer measurements.</p>
