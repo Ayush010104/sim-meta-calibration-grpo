@@ -1,0 +1,30 @@
+config K=8 M=49 L=5: geometry check 0.0e+00
+no impairment: 0.757
+psi      =0.05   ideal-model 0.733±0.010  oracle 0.696  retained 105.2%
+psi      =0.1    ideal-model 0.679±0.016  oracle 0.722  retained  94.2%
+psi      =0.2    ideal-model 0.513±0.016  oracle 0.732  retained  70.1%
+psi      =0.32   ideal-model 0.294±0.025  oracle 0.713  retained  41.2%
+psi      =0.5    ideal-model 0.072±0.014  oracle 0.720  retained  10.0%
+weak     =0.95   ideal-model 0.718±0.000  oracle 0.693  retained 103.7%
+weak     =0.85   ideal-model 0.581±0.000  oracle 0.666  retained  87.2%
+weak     =0.7    ideal-model 0.325±0.000  oracle 0.542  retained  60.0%
+weak     =0.5    ideal-model 0.100±0.000  oracle 0.453  retained  22.1%
+spacing  =0.005  ideal-model 0.758±0.001  oracle 0.712  retained 106.5%
+spacing  =0.01   ideal-model 0.758±0.001  oracle 0.720  retained 105.4%
+spacing  =0.03   ideal-model 0.753±0.006  oracle 0.695  retained 108.3%
+spacing  =0.05   ideal-model 0.738±0.014  oracle 0.703  retained 104.9%
+offset   =0.02   ideal-model 0.741±0.006  oracle 0.722  retained 102.6%
+offset   =0.05   ideal-model 0.664±0.014  oracle 0.718  retained  92.6%
+offset   =0.1    ideal-model 0.466±0.019  oracle 0.694  retained  67.1%
+offset   =0.2    ideal-model 0.148±0.012  oracle 0.708  retained  21.0%
+csi_db   =-20    ideal-model 0.667±0.013  oracle 0.757  retained  88.0%
+csi_db   =-15    ideal-model 0.689±0.011  oracle 0.757  retained  90.9%
+csi_db   =-10    ideal-model 0.578±0.029  oracle 0.757  retained  76.3%
+csi_db   =-5     ideal-model 0.384±0.029  oracle 0.757  retained  50.7%
+amp_elem =0.05   ideal-model 0.739±0.014  oracle 0.708  retained 104.3%
+amp_elem =0.1    ideal-model 0.677±0.016  oracle 0.714  retained  94.8%
+amp_elem =0.2    ideal-model 0.498±0.017  oracle 0.685  retained  72.6%
+stuck    =0.01   ideal-model 0.546±0.030  oracle 0.713  retained  76.7%
+stuck    =0.03   ideal-model 0.375±0.067  oracle 0.716  retained  52.3%
+stuck    =0.05   ideal-model 0.327±0.069  oracle 0.699  retained  46.8%
+DONE

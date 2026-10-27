@@ -1,0 +1,21 @@
+[rho0.7_v3.0_S8_n50] channel change per step NMSE -5.1 dB | CSI = previous step + -10 dB noise | S=8 probes, 50 gradient steps per candidate
+  pretrain traj 5/30: mean rate 0.347, policy-proposal chosen 48% (1.0 min)
+  pretrain traj 10/30: mean rate 0.385, policy-proposal chosen 50% (2.0 min)
+  pretrain traj 15/30: mean rate 0.359, policy-proposal chosen 56% (3.1 min)
+  pretrain traj 20/30: mean rate 0.391, policy-proposal chosen 48% (4.6 min)
+  pretrain traj 25/30: mean rate 0.366, policy-proposal chosen 32% (6.2 min)
+  pretrain traj 30/30: mean rate 0.389, policy-proposal chosen 50% (7.7 min)
+O          mean 0.339 | quarters [np.float64(0.323), np.float64(0.369), np.float64(0.331), np.float64(0.332)] | per-traj [0.349, 0.309, 0.344, 0.353]
+A          mean 0.188 | quarters [np.float64(0.177), np.float64(0.199), np.float64(0.188), np.float64(0.186)] | per-traj [0.196, 0.193, 0.165, 0.197]
+B          mean 0.270 | quarters [np.float64(0.263), np.float64(0.28), np.float64(0.261), np.float64(0.276)] | per-traj [0.272, 0.265, 0.263, 0.282]
+D          mean 0.368 | quarters [np.float64(0.341), np.float64(0.374), np.float64(0.363), np.float64(0.396)] | per-traj [0.37, 0.366, 0.356, 0.38]
+E-scratch  mean 0.342 | quarters [np.float64(0.312), np.float64(0.356), np.float64(0.332), np.float64(0.367)] | per-traj [0.346, 0.345, 0.326, 0.35] | policy pick 34%
+E-frozen   mean 0.377 | quarters [np.float64(0.372), np.float64(0.393), np.float64(0.351), np.float64(0.393)] | per-traj [0.382, 0.384, 0.367, 0.377] | policy pick 47%
+E-pre      mean 0.377 | quarters [np.float64(0.375), np.float64(0.382), np.float64(0.361), np.float64(0.39)] | per-traj [0.388, 0.376, 0.365, 0.379] | policy pick 37%
+E-pre - D: per-traj [0.017, 0.011, 0.009, -0.001] overall +0.009
+E-pre - B: per-traj [0.115, 0.112, 0.102, 0.098] overall +0.107
+E-pre - E-scratch: per-traj [0.042, 0.031, 0.039, 0.029] overall +0.035
+E-pre - E-frozen: per-traj [0.006, -0.007, -0.002, 0.002] overall -0.000
+D - B: per-traj [0.098, 0.101, 0.094, 0.099] overall +0.098
+D - A: per-traj [0.174, 0.173, 0.191, 0.184] overall +0.181
+DONE

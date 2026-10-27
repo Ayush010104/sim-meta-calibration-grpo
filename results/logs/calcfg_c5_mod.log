@@ -1,0 +1,29 @@
+[c5_mod] K=5 M=36 L=4 level=moderate device=7 | unmodeled: amp_elem=no, stuck=0
+u=   0 dev 0.199 (0s)
+u=  25 dev 0.353 (61s)
+u=  50 dev 0.518 (113s)
+u=  75 dev 0.546 (158s)
+u= 100 dev 0.614 (207s)
+u= 125 dev 0.526 (248s)
+u= 150 dev 0.735 (289s)
+u= 175 dev 0.681 (326s)
+u= 200 dev 0.584 (362s)
+u= 225 dev 0.644 (399s)
+u= 250 dev 0.671 (435s)
+u= 275 dev 0.673 (471s)
+u= 300 dev 0.665 (510s)
+u= 325 dev 0.734 (558s)
+u= 350 dev 0.667 (607s)
+u= 375 dev 0.806 (661s)
+u= 400 dev 0.741 (709s)
+== [c5_mod] FINAL on 40 test channels ==
+  ideal-model gradient                 0.277
+  amplitude-aware gradient             0.405
+  CALIBRATED (RL) gradient             0.781
+  oracle, modeled class only           0.819
+  oracle, full device                  0.819
+  oracle, full device + perfect CSI    1.063
+  calibrated - amplitude-aware gradient: +0.376 +- 0.084, wins 88%
+  calibrated - ideal-model gradient: +0.504 +- 0.078, wins 98%
+  parameter errors (start -> learned): {'psi': 0.1653, 'psi_start': 0.3699, 'amp': 0.0747, 'amp_start': 0.3, 'spacing': 0.0074, 'spacing_start': 0.0129, 'offset': 0.0316, 'offset_start': 0.0585}
+DONE
