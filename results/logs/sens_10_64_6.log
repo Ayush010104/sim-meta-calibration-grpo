@@ -1,0 +1,30 @@
+config K=10 M=64 L=6: geometry check 0.0e+00
+no impairment: 0.522
+psi      =0.05   ideal-model 0.500±0.003  oracle 0.497  retained 100.7%
+psi      =0.1    ideal-model 0.447±0.001  oracle 0.533  retained  83.8%
+psi      =0.2    ideal-model 0.323±0.017  oracle 0.518  retained  62.2%
+psi      =0.32   ideal-model 0.142±0.017  oracle 0.495  retained  28.6%
+psi      =0.5    ideal-model 0.030±0.002  oracle 0.509  retained   5.9%
+weak     =0.95   ideal-model 0.501±0.000  oracle 0.516  retained  97.0%
+weak     =0.85   ideal-model 0.408±0.000  oracle 0.500  retained  81.5%
+weak     =0.7    ideal-model 0.209±0.000  oracle 0.401  retained  52.1%
+weak     =0.5    ideal-model 0.045±0.000  oracle 0.296  retained  15.2%
+spacing  =0.005  ideal-model 0.522±0.001  oracle 0.511  retained 102.2%
+spacing  =0.01   ideal-model 0.522±0.002  oracle 0.509  retained 102.6%
+spacing  =0.03   ideal-model 0.519±0.004  oracle 0.525  retained  98.9%
+spacing  =0.05   ideal-model 0.511±0.003  oracle 0.527  retained  96.8%
+offset   =0.02   ideal-model 0.504±0.002  oracle 0.532  retained  94.7%
+offset   =0.05   ideal-model 0.435±0.005  oracle 0.512  retained  85.0%
+offset   =0.1    ideal-model 0.278±0.012  oracle 0.504  retained  55.1%
+offset   =0.2    ideal-model 0.060±0.001  oracle 0.487  retained  12.2%
+csi_db   =-20    ideal-model 0.498±0.015  oracle 0.522  retained  95.4%
+csi_db   =-15    ideal-model 0.477±0.012  oracle 0.522  retained  91.3%
+csi_db   =-10    ideal-model 0.409±0.012  oracle 0.522  retained  78.4%
+csi_db   =-5     ideal-model 0.256±0.023  oracle 0.522  retained  49.1%
+amp_elem =0.05   ideal-model 0.503±0.002  oracle 0.530  retained  95.0%
+amp_elem =0.1    ideal-model 0.454±0.004  oracle 0.507  retained  89.6%
+amp_elem =0.2    ideal-model 0.316±0.016  oracle 0.533  retained  59.3%
+stuck    =0.01   ideal-model 0.393±0.065  oracle 0.521  retained  75.4%
+stuck    =0.03   ideal-model 0.230±0.007  oracle 0.510  retained  45.0%
+stuck    =0.05   ideal-model 0.148±0.021  oracle 0.494  retained  29.9%
+DONE

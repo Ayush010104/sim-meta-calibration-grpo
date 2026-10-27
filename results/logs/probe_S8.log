@@ -1,0 +1,12 @@
+channel aging per step: NMSE(H_t vs H_t-1) = -11.9 dB; estimation noise -10 dB; S=8 probes/update, T=100
+O: mean true rate 0.367  (per trajectory [0.363, 0.366, 0.366, 0.374], first half 0.343, second half 0.391)  123s
+A: mean true rate 0.293  (per trajectory [0.297, 0.297, 0.283, 0.297], first half 0.281, second half 0.306)  125s
+B: mean true rate 0.374  (per trajectory [0.373, 0.369, 0.376, 0.378], first half 0.357, second half 0.390)  470s
+D: mean true rate 0.550  (per trajectory [0.559, 0.558, 0.547, 0.538], first half 0.521, second half 0.579)  401s
+C: mean true rate 0.547  (per trajectory [0.555, 0.552, 0.549, 0.531], first half 0.507, second half 0.587)  251s
+   learned knobs (end, per trajectory): lambda [-0.47999998927116394, -0.10999999940395355, -0.4099999964237213, 0.019999999552965164], c [0.9100000262260437, 0.9200000166893005, 0.9200000166893005, 0.8999999761581421], s [0.14000000059604645, 0.1599999964237213, 0.11999999731779099, 0.07999999821186066]
+C - D: per-trajectory mean diff [-0.004, -0.006, 0.002, -0.007]  overall -0.004
+C - B: per-trajectory mean diff [0.182, 0.183, 0.173, 0.153]  overall +0.173
+C - A: per-trajectory mean diff [0.258, 0.256, 0.266, 0.234]  overall +0.253
+D - B: per-trajectory mean diff [0.186, 0.189, 0.172, 0.16]  overall +0.177
+DONE

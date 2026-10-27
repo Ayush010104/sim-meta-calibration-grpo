@@ -411,9 +411,60 @@ footer{padding-block:28px 40px; font-family:var(--mono); font-size:11.5px; color
     <p class="cap">The prior absorbs the shared batch structure (phase-pattern error 0.316 &rarr; 0.199&nbsp;rad, amplitude 0.69 vs batch 0.70); the inner GRPO then adapts the device-specific amplitude and geometry.</p>
   </section>
 
-  <!-- ===== 05 LESSONS ===== -->
+  <!-- ===== 05 STRESS TEST ===== -->
+  <section class="proj" id="stress">
+    <div class="eyebrow sec-num">05 &mdash; Stress-testing across impairments, sizes and devices</div>
+    <h2 class="sec-h">Which imperfections break model-based design &mdash; and how far calibration reaches</h2>
+    <p class="sec-body">Every impairment was first switched on <strong>alone</strong> and swept in size, on three SIM sizes (5 users / 4&times;36, 8 users / 5&times;49, 10 users / 6&times;64) and three device draws. Bigger surfaces are markedly more fragile: on the 384-element system, a model-based design keeps only <strong>6%</strong> of the achievable rate at 0.5&nbsp;rad phase error, <strong>15%</strong> at a 0.5 weak-state amplitude and <strong>12%</strong> at 0.2-pitch layer misalignment &mdash; while layer-spacing errors up to 5% are almost harmless.</p>
+    <div class="figure-box arch-img-card">
+      <img class="arch-img" src="assets/Fig19_impairment_sensitivity.png" alt="Seven panels: rate kept by model-based design versus impairment size for phase error, amplitude, lateral offset, spacing, CSI error, per-element amplitude spread and stuck elements, for three system sizes.">
+    </div>
+    <h3 class="subsec-h">Calibration-GRPO across configurations (CSI error included)</h3>
+    <div class="figure-box table-scroll">
+      <table class="res-table">
+        <thead><tr><th>Configuration</th><th>Ideal-model gradient</th><th>Amplitude-aware</th><th>Calibration-GRPO</th><th>Oracle</th><th>Share of oracle</th></tr></thead>
+        <tbody>
+          <tr><td>Small, moderate</td><td>0.277</td><td>0.405</td><td class="win">0.781</td><td>0.819</td><td class="win">95%</td></tr>
+          <tr><td>Medium, moderate</td><td>0.079</td><td>0.155</td><td class="win">0.392</td><td>0.441</td><td class="win">89%</td></tr>
+          <tr><td>Large, mild</td><td>0.198</td><td>0.281</td><td class="win">0.390</td><td>0.446</td><td>87%</td></tr>
+          <tr><td>Large, moderate</td><td>0.033</td><td>0.061</td><td class="win">0.259</td><td>0.332</td><td>78%</td></tr>
+          <tr><td>Large, moderate &middot; 2nd device</td><td>0.038</td><td>0.118</td><td class="win">0.262</td><td>0.354</td><td>74%</td></tr>
+          <tr><td>Large, moderate + unmodeled errors</td><td>0.020</td><td>0.044</td><td class="win">0.114</td><td>0.346</td><td>33%</td></tr>
+          <tr><td>Large, severe</td><td>0.003</td><td>0.009</td><td>0.013</td><td>0.167</td><td>8%</td></tr>
+        </tbody>
+      </table>
+      <p class="cap">Worst-user rate (bit/s/Hz), 40 held-out test channels. Unmodeled errors = per-element amplitude spread + 3% stuck elements, outside the calibration model. At the severe level every candidate model yields near-zero rate, so the reward carries no signal &mdash; the method's limit.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-chip"><div class="num">95%</div><div class="lbl">of oracle on the small system (+0.38 over amplitude-aware)</div></div>
+      <div class="stat-chip"><div class="num">7.8&times;</div><div class="lbl">ideal-model design on the 384-element system (0.259 vs 0.033)</div></div>
+      <div class="stat-chip"><div class="num">100%</div><div class="lbl">of test channels improved on medium and large systems</div></div>
+      <div class="stat-chip"><div class="num">2 / 2</div><div class="lbl">independent devices reproduce the gain (0.259, 0.262)</div></div>
+    </div>
+    <div class="figure-box arch-img-card" style="margin-top:20px">
+      <img class="arch-img" src="assets/Fig20_calibration_configurations.png" alt="Grouped bars for seven configurations comparing ideal-model, amplitude-aware, Calibration-GRPO and oracle designs, with the share of oracle reached by Calibration-GRPO.">
+    </div>
+  </section>
+
+  <!-- ===== 06 OPERATION ===== -->
+  <section class="proj" id="operation">
+    <div class="eyebrow sec-num">06 &mdash; Operation under fast-changing, stale CSI</div>
+    <h2 class="sec-h">Calibration fixes the device; a pre-trained RL start policy helps when channels race ahead</h2>
+    <p class="sec-body">After calibration the remaining loss is channel knowledge: the base station only sees a stale, noisy estimate. Each step it probes a handful of candidate configurations on the real channel and deploys the best. With slow fading, probing warm-started candidates recovers the whole CSI loss (<strong>+88%</strong> over blind design). With fast fading (&rho;&nbsp;=&nbsp;0.7) at <strong>10&nbsp;m/s</strong>, an RL start policy pre-trained offline on 30 simulated trajectories beats the best heuristic by <strong>+10%</strong> on every held-out trajectory and the blind design by <strong>2.4&times;</strong>; without pre-training it does not.</p>
+    <div class="figure-box arch-img-card">
+      <img class="arch-img" src="assets/Fig21_csi_probing_operation.png" alt="Left: slow fading, probing with warm starts reaches 0.55 versus 0.29 for blind design. Right: fast fading at 3 and 10 m/s, the pre-trained RL policy is highest among practical methods.">
+    </div>
+    <div class="stat-row">
+      <div class="stat-chip"><div class="num">+88%</div><div class="lbl">probed warm starts vs blind design, slow fading</div></div>
+      <div class="stat-chip"><div class="num">+10%</div><div class="lbl">pre-trained RL vs best heuristic at 10&nbsp;m/s (4 / 4 trajectories)</div></div>
+      <div class="stat-chip"><div class="num">2.4&times;</div><div class="lbl">pre-trained RL vs blind design at 10&nbsp;m/s</div></div>
+    </div>
+    <p class="cap">An offline meta-RL study (multi-task pre-training, Reptile, CAVIA-style context and a new feedback-conditioned in-context policy) is in progress under paired noise on 8 held-out trajectories.</p>
+  </section>
+
+  <!-- ===== 07 LESSONS ===== -->
   <section class="proj" id="lessons">
-    <div class="eyebrow sec-num">05 &mdash; What nine meta-learning variants taught me</div>
+    <div class="eyebrow sec-num">07 &mdash; What nine meta-learning variants taught me</div>
     <h2 class="sec-h">Meta-learning pays when tasks share structure &mdash; not when they drift</h2>
     <p class="sec-body">Before the calibration work, the project systematically tested meta-learning for user mobility: Reptile meta-prior ensembles, attention-based reset rules, single-copy Reptile / periodic-EMA / proximal Reptile / FOMAML, a changed (flip) MDP, offline Reptile initialization and meta-learned unrolled optimizers.</p>
     <div class="lesson-grid">
