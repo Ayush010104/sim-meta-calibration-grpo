@@ -293,22 +293,17 @@ footer{padding-block:28px 40px; font-family:var(--mono); font-size:11.5px; color
     <h1>Meta-Calibration GRPO: Teaching an RL Agent What Imperfect Metasurface Hardware Really Is</h1>
     <div class="hero-grid">
       <div>
-        <p>Gradient methods are excellent at configuring stacked intelligent metasurfaces &mdash; as long as the hardware behaves exactly like its model. Real devices never do. I built a bilevel reinforcement-learning framework in which a critic-free GRPO policy learns a device's hidden non-idealities from measured data rates alone, hands a corrected model to a fast gradient solver, and meta-learns that knowledge across devices from the same fabrication batch.</p>
-        <div class="authors">
-          <span class="authors-names"><b>Ayush B. Patel</b><span class="fa-tag">first author</span>&amp; Abhishek Jindal &middot; DAIICT</span>
-        </div>
-        <div class="hero-links">
-          <a class="paper-link" href="https://github.com/Ayush010104/sim-meta-calibration-grpo" target="_blank" rel="noopener">Code &middot; GitHub &#8599;</a>
-          <span class="paper-link" style="cursor:default">Manuscript in preparation</span>
-        </div>
+        <p>Gradient methods are excellent at configuring stacked intelligent metasurfaces &mdash; as long as the hardware behaves exactly like its model. Real devices never do. I built a bilevel reinforcement-learning framework in which a critic-free GRPO policy learns a device's hidden non-idealities from measured data rates alone, hands a corrected model to a fast gradient solver, and meta-learns that knowledge across devices from the same fabrication batch. Under full hardware impairments, the learned policy delivers <strong>3.4&times;</strong> the worst-user rate of a model-based gradient design.</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">3.4&times;</div>
-        <div class="stat-label">worst-user rate vs. model-based gradient design, with all hardware impairments active</div>
-        <div class="stat-sub">better on 100% of 40 held-out channels &middot; 84% of oracle</div>
+      <div class="stat-card authors-card">
+        <div class="authors-card-name"><b>Ayush B. Patel</b></div>
+        <div class="fa-tag">first author</div>
+        <div class="authors-card-co">&amp; Prof Abhishek Jindal</div>
+        <div class="authors-card-aff">DAIICT</div>
+        <span class="paper-link" style="cursor:default">Manuscript in preparation</span>
       </div>
     </div>
-    <div class="byline">Group-Relative Policy Optimization &middot; Meta-Learning (Reptile) &middot; Bilevel Optimization &middot; 1-bit Stacked Intelligent Metasurfaces &middot; Hardware Calibration</div>
+    <div class="byline">Group-Relative Policy Optimization &middot; Meta-Learning (Reptile) &middot; Bilevel Optimization &middot; 1-bit Stacked Intelligent Metasurfaces &middot</div>
   </header>
 
   <!-- ===== 01 PROBLEM ===== -->
@@ -480,7 +475,7 @@ footer{padding-block:28px 40px; font-family:var(--mono); font-size:11.5px; color
   </section>
 
   <section class="closing">
-    <span class="pill">Patel &amp; Jindal &middot; DAIICT &middot; in preparation</span>
+    <span class="pill">Manuscript in preparation</span>
     <p>An exact gradient solver is the right tool when the model is right. When it is not, a critic-free group-relative policy can learn the model itself from measured rates alone &mdash; recovering the hardware's hidden phase errors, amplitudes and geometry, lifting the worst user's rate 3.4-fold under combined impairments, and, meta-learned across a fabrication batch, calibrating each new device with 5&ndash;10&times; fewer measurements.</p>
   </section>
 
